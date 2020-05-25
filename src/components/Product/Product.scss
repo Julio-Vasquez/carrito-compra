@@ -1,0 +1,28 @@
+.product {
+  padding: 0;
+
+  .card {
+    margin: 15px;
+
+    .card-title {
+      height: 50px;
+    }
+
+    .btn {
+      width: 100%;
+      border-radius: 50px;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: #fff !important;
+        border-color: #28a745;
+        color: #28a745;
+        box-shadow: none !important;
+      }
+    }
+    #price {
+      font-weight: 600;
+    }
+  }
+}

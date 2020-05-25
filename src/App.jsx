@@ -1,19 +1,21 @@
 import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import Footer from "./components/Footer";
-import Loading from "./components/Loading";
 import TopMenu from "./components/TopMenu";
+import Products from "./components/Products";
+import useFetch from "./Hooks/useFetch";
+
+import { urlApiProducts } from "./utils/constants";
 
 function App() {
-  const notify = () => toast("Proyecto: Carrito de compra!");
+  const products = useFetch(urlApiProducts, null);
 
   return (
     <div className="App">
       <TopMenu />
-      <button onClick={notify}>Click en mi!</button>
-      <ToastContainer />
-      <Loading />
-      <Footer />
+      <Products
+        products={products.result}
+        error={products.error}
+        loading={products.loading}
+      />
     </div>
   );
 }
