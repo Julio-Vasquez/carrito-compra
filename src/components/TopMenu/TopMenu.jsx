@@ -1,21 +1,22 @@
 import React from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
+import PropTypes from "prop-types";
 import Car from "./../Car";
 
 import { ReactComponent as Logo } from "./../../assets/svg/ice-cream.svg";
 import "./TopMenu.scss";
 
-export default function TopMenu() {
+const TopMenu = ({ productCar, getProductsCar }) => {
   return (
     <Navbar bg="dark" variant="dark" className="top-menu">
       <Container>
         <BrandNav />
         <MenuNav />
-        <Car />
+        <Car productCar={productCar} getProductsCar={getProductsCar} />
       </Container>
     </Navbar>
   );
-}
+};
 
 const BrandNav = () => {
   const { Brand } = Navbar;
@@ -41,3 +42,10 @@ const MenuNav = () => {
     </Nav>
   );
 };
+
+TopMenu.propTypes = {
+  productCar: PropTypes.array.isRequired,
+  getProductsCar: PropTypes.func.isRequired,
+};
+
+export default TopMenu;

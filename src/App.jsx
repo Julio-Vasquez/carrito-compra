@@ -8,7 +8,6 @@ import { urlApiProducts, STORAGE_PRODUCTS_EC } from "./utils/constants";
 
 function App() {
   const [productsCar, setProductsCar] = useState([]);
-
   const products = useFetch(urlApiProducts, null);
 
   const addProductCar = (id, name) => {
@@ -21,6 +20,7 @@ function App() {
     setProductsCar(arrayProducts);
     //almaceno en el localStorage el nuevo carro
     localStorage.setItem(STORAGE_PRODUCTS_EC, productsCar);
+    getProductsCar();
     toast.success(`🚀 ${name} añadido al carrito correctamente.`);
     //getProductsCar();
   };
@@ -30,7 +30,6 @@ function App() {
     //ceparo el string si existe
     if (arrayProducts) setProductsCar(arrayProducts.split(","));
     else setProductsCar([]);
-    console.log(`Carrito viejo ${arrayProducts}`);
   };
 
   useEffect(() => {
@@ -39,7 +38,7 @@ function App() {
 
   return (
     <div className="App">
-      <TopMenu />
+      <TopMenu productCar={productsCar} getProductsCar={getProductsCar} />
       <Products
         products={products.result}
         error={products.error}
