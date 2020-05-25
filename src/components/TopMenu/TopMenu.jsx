@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
+import Car from "./../Car";
 
 import { ReactComponent as Logo } from "./../../assets/svg/ice-cream.svg";
 import "./TopMenu.scss";
@@ -10,6 +11,7 @@ export default function TopMenu() {
       <Container>
         <BrandNav />
         <MenuNav />
+        <Car />
       </Container>
     </Navbar>
   );
