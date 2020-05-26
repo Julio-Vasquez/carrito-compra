@@ -5,14 +5,21 @@ import { ReactComponent as CartEmpty } from "./../../assets/svg/cart-empty.svg";
 import { ReactComponent as CartFull } from "./../../assets/svg/cart-full.svg";
 
 import CarContentHeader from "./CarContentHeader";
+import { removeDuplicateItems } from "./../../utils/arrayFunctions";
 
 import { PATH_BASE, STORAGE_PRODUCTS_EC } from "./../../utils/constants";
 
 import "./Car.scss";
 
-const Car = ({ productCar, getProductsCar }) => {
+const Car = ({ productCar, getProductsCar, products }) => {
   const [carOpen, setCarOpen] = useState(false);
   const widthCartContent = carOpen ? 400 : 0;
+  const [singelProductsCart, setSingelProductsCart] = useState([]);
+
+  useEffect(() => {
+    const allProductsId = removeDuplicateItems(productCar);
+    setSingelProductsCart(allProductsId);
+  }, [productCar]);
 
   const openCar = () => {
     setCarOpen(true);
@@ -40,7 +47,9 @@ const Car = ({ productCar, getProductsCar }) => {
       </Button>
       <div className="car-content" style={{ width: widthCartContent }}>
         <CarContentHeader closeCar={closeCar} emptyCar={emptyCar} />
-        todos mis productos
+        {singelProductsCart.map((idProducts, key) => (
+          <CarContentProducts products={products} key={key} />
+        ))}
       </div>
     </>
   );
@@ -49,5 +58,27 @@ const Car = ({ productCar, getProductsCar }) => {
 Car.propTypes = {
   productCar: PropTypes.array.isRequired,
   getProductsCar: PropTypes.func.isRequired,
+  products: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    result: PropTypes.array.isRequired,
+    error: PropTypes.string,
+  }),
 };
+
 export default Car;
+
+const CarContentProducts = ({ products }) => {
+  return (
+    <div>
+      <p>productos</p>
+    </div>
+  );
+};
+
+CarContentProducts.propTypes = {
+  products: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    result: PropTypes.array.isRequired,
+    error: PropTypes.string,
+  }),
+};

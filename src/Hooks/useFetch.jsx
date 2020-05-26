@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const useFetch = (url, options) => {
   const [loading, setLoading] = useState(true);
-  const [result, setResult] = useState([{}]);
+  const [result, setResult] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {

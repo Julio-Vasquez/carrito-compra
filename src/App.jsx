@@ -38,7 +38,11 @@ function App() {
 
   return (
     <div className="App">
-      <TopMenu productCar={productsCar} getProductsCar={getProductsCar} />
+      <TopMenu
+        productCar={productsCar}
+        getProductsCar={getProductsCar}
+        products={products}
+      />
       <Products
         products={products.result}
         error={products.error}

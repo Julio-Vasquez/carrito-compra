@@ -6,13 +6,17 @@ import Car from "./../Car";
 import { ReactComponent as Logo } from "./../../assets/svg/ice-cream.svg";
 import "./TopMenu.scss";
 
-const TopMenu = ({ productCar, getProductsCar }) => {
+const TopMenu = ({ productCar, getProductsCar, products }) => {
   return (
     <Navbar bg="dark" variant="dark" className="top-menu">
       <Container>
         <BrandNav />
         <MenuNav />
-        <Car productCar={productCar} getProductsCar={getProductsCar} />
+        <Car
+          productCar={productCar}
+          getProductsCar={getProductsCar}
+          products={products}
+        />
       </Container>
     </Navbar>
   );
@@ -46,6 +50,11 @@ const MenuNav = () => {
 TopMenu.propTypes = {
   productCar: PropTypes.array.isRequired,
   getProductsCar: PropTypes.func.isRequired,
+  products: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    result: PropTypes.array.isRequired,
+    error: PropTypes.string,
+  }),
 };
 
 export default TopMenu;
