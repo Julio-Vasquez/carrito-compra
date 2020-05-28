@@ -5,9 +5,16 @@ import { ReactComponent as CartEmpty } from "./../../assets/svg/cart-empty.svg";
 import { ReactComponent as CartFull } from "./../../assets/svg/cart-full.svg";
 
 import CarContentHeader from "./CarContentHeader";
-import { removeDuplicateItems } from "./../../utils/arrayFunctions";
+import CarContentProducts from "./CarContentProducts";
+import CarContentFooter from "./CarContentFooter";
 
-import { PATH_BASE, STORAGE_PRODUCTS_EC } from "./../../utils/constants";
+import {
+  removeDuplicateItems,
+  removeItem,
+  countDuplicateItems,
+} from "./../../utils/arrayFunctions";
+
+import { STORAGE_PRODUCTS_EC } from "./../../utils/constants";
 
 import "./Car.scss";
 
@@ -15,11 +22,34 @@ const Car = ({ productCar, getProductsCar, products }) => {
   const [carOpen, setCarOpen] = useState(false);
   const widthCartContent = carOpen ? 400 : 0;
   const [singelProductsCart, setSingelProductsCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const allProductsId = removeDuplicateItems(productCar);
     setSingelProductsCart(allProductsId);
   }, [productCar]);
+
+  useEffect(() => {
+    const productData = [];
+    let totalPriceTemp = 0;
+    const allProductsId = removeDuplicateItems(productCar);
+    allProductsId.forEach((productId) => {
+      productData.push({
+        id: productId,
+        quantity: countDuplicateItems(productCar, parseInt(productId)),
+      });
+    });
+    if (!products.loading && products.result) {
+      products.result.forEach((product) => {
+        productData.forEach((item) => {
+          if (product.id === parseInt(item.id)) {
+            totalPriceTemp += product.price * item.quantity;
+          }
+        });
+      });
+    }
+    setTotalPrice(totalPriceTemp);
+  }, [productCar, products]);
 
   const openCar = () => {
     setCarOpen(true);
@@ -36,6 +66,19 @@ const Car = ({ productCar, getProductsCar, products }) => {
     getProductsCar();
   };
 
+  const increaseQuantity = (id) => {
+    const arrayItemsCar = productCar;
+    arrayItemsCar.push(id);
+    localStorage.setItem(STORAGE_PRODUCTS_EC, arrayItemsCar);
+    getProductsCar();
+  };
+
+  const decreaseQuantity = (id) => {
+    const result = removeItem(productCar, id.toString());
+    localStorage.setItem(STORAGE_PRODUCTS_EC, result);
+    getProductsCar();
+  };
+
   return (
     <>
       <Button variant="link" className="car">
@@ -47,9 +90,19 @@ const Car = ({ productCar, getProductsCar, products }) => {
       </Button>
       <div className="car-content" style={{ width: widthCartContent }}>
         <CarContentHeader closeCar={closeCar} emptyCar={emptyCar} />
-        {singelProductsCart.map((idProducts, key) => (
-          <CarContentProducts products={products} key={key} />
-        ))}
+        <div className="cart-content__products">
+          {singelProductsCart.map((idProducts, key) => (
+            <CarContentProducts
+              key={key}
+              products={products}
+              idProductsCar={productCar}
+              idProductCar={parseInt(idProducts)}
+              increaseQuantity={increaseQuantity}
+              decreaseQuantity={decreaseQuantity}
+            />
+          ))}
+        </div>
+        <CarContentFooter totalPrice={totalPrice} />
       </div>
     </>
   );
@@ -66,19 +119,3 @@ Car.propTypes = {
 };
 
 export default Car;
-
-const CarContentProducts = ({ products }) => {
-  return (
-    <div>
-      <p>productos</p>
-    </div>
-  );
-};
-
-CarContentProducts.propTypes = {
-  products: PropTypes.shape({
-    loading: PropTypes.bool.isRequired,
-    result: PropTypes.array.isRequired,
-    error: PropTypes.string,
-  }),
-};

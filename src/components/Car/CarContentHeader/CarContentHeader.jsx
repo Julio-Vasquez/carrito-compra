@@ -1,10 +1,9 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { ReactComponent as Garbage } from "./../../../assets/svg/garbage.svg";
-import { ReactComponent as Close } from "./../../../assets/svg/close.svg";
 import PropTypes from "prop-types";
 
-import "./CarContentHeader.scss";
+import { ReactComponent as Garbage } from "./../../../assets/svg/garbage.svg";
+import { ReactComponent as Close } from "./../../../assets/svg/close.svg";
 
 const CarContentHeader = ({ closeCar, emptyCar }) => {
   return (
@@ -13,7 +12,6 @@ const CarContentHeader = ({ closeCar, emptyCar }) => {
         <Close onClick={closeCar} />
         <h2>Carrito</h2>
       </div>
-
       <Button variant="link" onClick={emptyCar}>
         Vaciar
         <Garbage />

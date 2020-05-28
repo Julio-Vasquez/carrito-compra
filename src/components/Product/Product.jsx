@@ -37,4 +37,5 @@ Product.propType = {
   }),
   addProductCar: PropTypes.func.isRequired,
 };
+
 export default Product;
